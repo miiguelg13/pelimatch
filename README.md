@@ -31,6 +31,18 @@ Tests (necesitan un MongoDB; no llaman a TMDB ni a Letterboxd, usan un servidor 
 TEST_MONGODB_URI=mongodb://127.0.0.1:27017 npm test
 ```
 
+## App en local
+
+```bash
+cd app
+npm install
+cp .env.example .env      # pon la IP de tu PC para hablar con tu servidor local
+npx expo start            # y abre la app con un development build o el APK
+```
+
+Pantallas: bienvenida → pareja (código) → Letterboxd (export + usuario) → plataformas → **Elegir** (mazo para deslizar), **Matches** y **Ajustes**.
+El deslizamiento corre en el hilo de UI (Reanimated 4 + Gesture Handler); el match llega por Socket.IO a los dos móviles a la vez.
+
 ## API
 
 Autenticación: `Authorization: Bearer <token>` (el token lo da `POST /api/users` y la app lo guarda cifrado en el móvil).

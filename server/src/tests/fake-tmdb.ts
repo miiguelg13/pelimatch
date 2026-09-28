@@ -120,7 +120,7 @@ export function startFakeTmdb(catalog = makeCatalog(), rss: Record<string, strin
     res.type('application/rss+xml').send(body);
   });
 
-  const server = app.listen(0);
+  const server = app.listen(Number(process.env.FAKE_TMDB_PORT ?? 0));
   const port = (server.address() as AddressInfo).port;
   return {
     url: `http://127.0.0.1:${port}`,
