@@ -19,7 +19,7 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: colors.bg,
           borderTopColor: colors.line,
-          height: 66 + insets.bottom,
+          height: 70 + insets.bottom,
           paddingTop: 6,
           paddingBottom: 6 + insets.bottom,
         },
