@@ -102,7 +102,7 @@ export function startFakeTmdb(catalog = makeCatalog(), rss: Record<string, strin
       .filter((m) => !provs.length || m.providers.some((p) => provs.includes(p)))
       .filter((m) => !maxRt || m.runtime <= maxRt)
       .sort((a, b) => b.popularity - a.popularity);
-    res.json({ page, results: list.slice((page - 1) * 20, page * 20).map(brief) });
+    res.json({ page, total_pages: Math.max(1, Math.ceil(list.length / 20)), results: list.slice((page - 1) * 20, page * 20).map(brief) });
   });
   app.get('/genre/movie/list', (_req, res) => {
     res.json({ genres: GENRES });

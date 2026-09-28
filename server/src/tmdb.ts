@@ -257,8 +257,9 @@ export interface DiscoverFilters {
 }
 
 /** Películas populares que cumplen los filtros (TMDB filtra en el servidor). */
-export async function discover(f: DiscoverFilters, page: number): Promise<number[]> {
-  const r = await tmdbGet<{ results: { id: number }[] }>('/discover/movie', {
+/** Una página de populares con los filtros; `totalPages` dice cuántas hay (TMDB no pasa de 500). */
+export async function discover(f: DiscoverFilters, page: number): Promise<{ ids: number[]; totalPages: number }> {
+  const r = await tmdbGet<{ results: { id: number }[]; total_pages?: number }>('/discover/movie', {
     language: config.language,
     region: config.region,
     sort_by: 'popularity.desc',
@@ -273,7 +274,7 @@ export async function discover(f: DiscoverFilters, page: number): Promise<number
     with_watch_monetization_types: f.providers?.length ? 'flatrate' : undefined,
     page,
   });
-  return r.results.map((m) => m.id);
+  return { ids: r.results.map((m) => m.id), totalPages: Math.min(r.total_pages ?? 1, 500) };
 }
 
 export async function recommendations(tmdbId: number): Promise<number[]> {

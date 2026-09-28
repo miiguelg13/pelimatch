@@ -79,6 +79,9 @@ describe('API', { skip: !MONGO && 'define TEST_MONGODB_URI' }, () => {
   test('recorrido completo', async () => {
     // Sin token no hay nada.
     assert.equal((await call(null, 'GET', '/me')).status, 401);
+    // Salud con comprobación de TMDB
+    const health = await call(null, 'GET', '/health?tmdb=1');
+    assert.deepEqual(health.data, { ok: true, tmdb: { ok: true, genres: 5, providers: 3 } });
 
     const a = await call(null, 'POST', '/users', { name: 'Miguel' });
     const b = await call(null, 'POST', '/users', { name: 'Laura' });

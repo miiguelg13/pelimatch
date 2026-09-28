@@ -177,9 +177,23 @@ function newCode(): string {
 
 export const api = Router();
 
-api.get('/health', (_req, res) => {
-  res.status(mongoose.connection.readyState === 1 ? 200 : 503).json({ ok: mongoose.connection.readyState === 1 });
-});
+api.get(
+  '/health',
+  h(async (req, res) => {
+    const db = mongoose.connection.readyState === 1;
+    const out: { ok: boolean; tmdb?: { ok: boolean; genres?: number; providers?: number; error?: string } } = { ok: db };
+    // ?tmdb=1 comprueba también que el token de TMDB funciona (sin enseñar nada de él).
+    if (req.query.tmdb) {
+      try {
+        const [genres, providers] = await Promise.all([getGenres(), getRegionProviders()]);
+        out.tmdb = { ok: true, genres: genres.length, providers: providers.length };
+      } catch (err) {
+        out.tmdb = { ok: false, error: err instanceof TmdbError ? err.message : 'error' };
+      }
+    }
+    res.status(db && out.tmdb?.ok !== false ? 200 : 503).json(out);
+  }),
+);
 
 /** Primer arranque de la app: crea el usuario y devuelve su token (solo esta vez). */
 api.post(

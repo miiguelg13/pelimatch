@@ -94,10 +94,15 @@ export async function buildDeck(ctx: DeckContext, f: SessionFilters, seed = Date
       maxYear: f.maxYear,
       providers: f.onlyMyProviders ? ctx.providers : null,
     };
-    // Varias páginas al azar entre las 5 primeras, para no ver siempre las mismas.
-    const pages = shuffle([1, 2, 3, 4, 5], seed + 3).slice(0, 3);
-    const lists = await mapLimit(pages, 3, (p) => discover(df, p).catch(() => [] as number[]));
-    queues.popular = shuffle([...new Set(lists.flat())], seed + 4);
+    // La página 1 siempre (dice cuántas hay) y dos más al azar entre las que existen (hasta la 8),
+    // para no ver siempre las mismas sin pedir páginas vacías cuando los filtros dejan pocas.
+    const first = await discover(df, 1).catch(() => ({ ids: [] as number[], totalPages: 1 }));
+    const others = shuffle(
+      Array.from({ length: Math.min(first.totalPages, 8) - 1 }, (_, i) => i + 2),
+      seed + 3,
+    ).slice(0, 2);
+    const lists = await mapLimit(others, 2, (p) => discover(df, p).then((r) => r.ids).catch(() => [] as number[]));
+    queues.popular = shuffle([...new Set([...first.ids, ...lists.flat()])], seed + 4);
   }
 
   // Se van cogiendo por turnos (watchlist, recomendada, popular) y se comprueban los filtros
