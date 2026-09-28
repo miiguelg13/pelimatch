@@ -21,7 +21,18 @@ echo  (si no es la direccion de tu servicio de Render, cierra esta ventana y cor
 echo.
 pause
 echo.
-echo  [1/2] Sesion de Expo (si no la tienes, te pide usuario y contrasena de expo.dev^)...
+echo  [1/3] Instalando las dependencias de la app (la primera vez tarda un par de minutos^)...
+if not exist node_modules\expo-router (
+  call npm ci --no-audit --no-fund
+  if errorlevel 1 (
+    echo.
+    echo  Fallo la instalacion de dependencias.
+    pause
+    exit /b 1
+  )
+)
+echo.
+echo  [2/3] Sesion de Expo (si no la tienes, te pide usuario y contrasena de expo.dev^)...
 call npx -y eas-cli@latest whoami >nul 2>&1
 if errorlevel 1 call npx -y eas-cli@latest login
 if errorlevel 1 (
@@ -30,8 +41,14 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo  [2/2] Encargando el APK (la primera vez pregunta si crear el proyecto en Expo: responde Y^)...
+echo  [3/3] Encargando el APK (la primera vez pregunta si crear el proyecto en Expo: responde Y^)...
 call npx -y eas-cli@latest build -p android --profile preview
+if errorlevel 1 (
+  echo.
+  echo  El encargo del APK ha fallado.
+  pause
+  exit /b 1
+)
 echo.
-echo  Si ha ido bien, arriba tienes el enlace del APK. Abrelo en los dos moviles para instalarlo.
+echo  Listo: arriba tienes el enlace del APK. Abrelo en los dos moviles para instalarlo.
 pause
