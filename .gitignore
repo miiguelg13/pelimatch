@@ -10,3 +10,5 @@ ios/
 *.apk
 *.aab
 .pelimatch-deploy
+logs/
+__pycache__/

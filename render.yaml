@@ -3,6 +3,7 @@ services:
     name: pelimatch
     runtime: node
     plan: free
+    region: frankfurt
     rootDir: server
     buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
