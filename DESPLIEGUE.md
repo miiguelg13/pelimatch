@@ -42,5 +42,5 @@ El plan gratis se duerme tras 15 minutos sin uso; la primera vez que abráis la 
 Cuando la app ya tenga la dirección de Render:
 
 1. Crea una cuenta gratis en [expo.dev](https://expo.dev/signup).
-2. Doble clic en `app\crear-apk.bat`: inicia sesión en Expo y encarga el APK a los servidores de Expo (~10–15 min).
+2. Doble clic en `app\crear-apk.bat`: comprueba la dirección del servidor, inicia sesión en Expo y encarga el APK a los servidores de Expo (~10–15 min).
 3. Al terminar te da un enlace: ábrelo en los dos móviles, descarga el APK e instálalo (Android pedirá permitir *instalar apps de origen desconocido*).
