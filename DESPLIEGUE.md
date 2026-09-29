@@ -43,4 +43,11 @@ Cuando la app ya tenga la dirección de Render:
 
 1. Crea una cuenta gratis en [expo.dev](https://expo.dev/signup).
 2. Doble clic en `app\crear-apk.bat`: comprueba la dirección del servidor, inicia sesión en Expo y encarga el APK a los servidores de Expo (~10–15 min).
-3. Al terminar te da un enlace: ábrelo en los dos móviles, descarga el APK e instálalo (Android pedirá permitir *instalar apps de origen desconocido*).
+3. La primera vez crea el proyecto en expo.dev y activa las **actualizaciones sin reinstalar** (EAS Update). Si pregunta, responde `Y` (también al keystore de Android: Expo lo guarda por ti).
+4. Al terminar te da un enlace: ábrelo en los dos móviles, descarga el APK e instálalo (Android pedirá permitir *instalar apps de origen desconocido*).
+
+## 6. Actualizar la app
+
+- **Servidor**: cada commit que llega a GitHub lo redespliega Render solo.
+- **Pantallas, textos, diseño**: doble clic en `app\publicar-actualizacion.bat`. Al abrir la app, los móviles bajan la versión nueva y enseñan «Hay una versión nueva · Reiniciar». No hace falta reinstalar.
+- **Cambios nativos** (un permiso nuevo, un módulo con código nativo): hay que subir `version` en `app/app.json` y hacer un APK nuevo con `crear-apk.bat`. Las actualizaciones solo llegan a los APK con la misma `version`.

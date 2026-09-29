@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MatchOverlay } from '@/components/MatchOverlay';
+import { UpdateBanner } from '@/components/UpdateBanner';
 import { StoreProvider, useStore } from '@/lib/store';
 import { colors } from '@/theme';
 
@@ -47,6 +48,7 @@ function Root() {
         <Stack.Screen name="new-session" options={{ title: 'Nueva sesión', presentation: 'modal' }} />
         <Stack.Screen name="movie/[id]" options={{ title: '' , headerTransparent: true }} />
       </Stack>
+      {ready ? <UpdateBanner /> : null}
       {ready ? <MatchOverlay /> : null}
       <StatusBar style="light" />
     </>
