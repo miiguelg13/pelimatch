@@ -41,12 +41,17 @@
       "typedRoutes": true
     },
     "extra": {
-      "apiUrl": "https://pelimatch.onrender.com"
+      "apiUrl": "https://pelimatch.onrender.com",
+      "router": {},
+      "eas": {
+        "projectId": "2d349fcd-efb9-4ebf-808c-61f374bc320d"
+      }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
+      "url": "https://u.expo.dev/2d349fcd-efb9-4ebf-808c-61f374bc320d",
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     }
