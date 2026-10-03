@@ -10,7 +10,24 @@ import { useStore } from '@/lib/store';
 import type { ImportJob, Me } from '@/lib/types';
 import { colors, fonts, radius, space } from '@/theme';
 
-const EXPORT_URL = 'https://letterboxd.com/user/exportdata/';
+const EXPORT_URL = 'https://letterboxd.com/settings/data/';
+
+/**
+ * Abre la página de exportación en Chrome. Con la app de Letterboxd instalada, Android le entrega
+ * a ella los enlaces de letterboxd.com; como no sabe mostrar esta página, la devuelve al navegador
+ * y se quedan los dos pasándosela en bucle. Pidiéndoselo a Chrome por su nombre, el enlace no pasa por la app.
+ */
+async function openExportPage() {
+  if (Platform.OS === 'android') {
+    try {
+      await Linking.openURL(`googlechrome://navigate?url=${encodeURIComponent(EXPORT_URL)}`);
+      return;
+    } catch {
+      /* sin Chrome: se abre con el navegador que haya */
+    }
+  }
+  await Linking.openURL(EXPORT_URL).catch(() => {});
+}
 
 export default function Letterboxd() {
   const { onboarding } = useLocalSearchParams<{ onboarding?: string }>();
@@ -126,8 +143,12 @@ export default function Letterboxd() {
           title="Abrir Letterboxd"
           variant="ghost"
           icon={<ExternalLink size={18} color={colors.text} />}
-          onPress={() => Linking.openURL(EXPORT_URL)}
+          onPress={openExportPage}
         />
+        <Body muted style={{ fontSize: 14 }}>
+          ¿No carga o se abren pestañas sin parar? Descarga el .zip desde un ordenador en letterboxd.com/settings/data, pásatelo al móvil y
+          elígelo aquí.
+        </Body>
         <Button title="Elegir el .zip" icon={<FileUp size={18} color={colors.goldInk} />} onPress={pick} loading={upBusy && !job} disabled={upBusy} />
         {job ? (
           <View style={{ gap: space(2) }} accessibilityLiveRegion="polite">
